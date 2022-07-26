@@ -2,7 +2,6 @@ FROM python:3
 
 RUN apt-get update
 COPY requirements.txt requirements.txt
-COPY secrets.json secrets.json
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
