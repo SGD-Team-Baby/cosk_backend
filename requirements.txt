@@ -1,0 +1,9 @@
+django
+djangorestframework
+dj-rest-auth
+django-allauth
+djangorestframework-simplejwt
+gunicorn
+whitenoise
+pymysql
+cryptography
