@@ -109,7 +109,6 @@ REST_FRAMEWORK = {
 #    ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ],
 }
@@ -133,6 +132,7 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/?verification=1'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
+OLD_PASSWORD_FIELD_ENABLED = True
 
 
 

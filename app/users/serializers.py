@@ -10,6 +10,21 @@ class UserSerializer(serializers.ModelSerializer):
     fields = ['id', 'email', 'name', 'answer', 'question']
 
 
+class UserInfoSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = User
+    fields = ['id', 'name', 'answer', 'question']
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = User
+    fields = ['name']
+
+
+
 
 class RegisterSerializer(RegisterSerializer):
   name = serializers.CharField(required=True, max_length=150)
