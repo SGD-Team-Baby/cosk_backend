@@ -6,5 +6,7 @@ RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY . .
+RUN mkdir upload
+RUN chmod 644 upload
 
 WORKDIR /app

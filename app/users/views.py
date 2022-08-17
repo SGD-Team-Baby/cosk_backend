@@ -39,6 +39,6 @@ class UserUpdateView(GenericAPIView):
 		serializer = UserUpdateSerializer(user, data=request.data)
 		if serializer.is_valid(raise_exception=True):
 			serializer.save()
-			return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+			return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

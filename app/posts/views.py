@@ -1,3 +1,4 @@
+import os, shutil
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
@@ -6,6 +7,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.response import Response
 
+from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView, GenericAPIView, ListAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -66,8 +68,8 @@ class PostCreateView(GenericAPIView):
 
 		serializer = PostCreateSerializer(data=request.data)
 		if serializer.is_valid(raise_exception=True):
-			serializer.save()
-			return Response(status=status.HTTP_200_OK)
+			post = serializer.save()
+			return Response(PostSerializer(post).data, status=status.HTTP_200_OK)
 
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -104,5 +106,10 @@ class PostDeleteView(GenericAPIView):
 		if post.user_id != user.id:
 			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+		upload_path = "/upload/" + str(post.id)
+		if os.path.exists(upload_path):
+			shutil.rmtree(upload_path)
+
 		post.delete()
 		return Response(status=status.HTTP_200_OK)
+

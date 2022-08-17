@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'corsheaders',
 
     #django-rest-auth
     'rest_framework',
@@ -64,6 +65,9 @@ INSTALLED_APPS = [
 
     #cosk
     'users',
+    'posts',
+    'tags',
+    'images',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +78,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
+
+CORS_ALLOW_HEADERS = [
+    "Authentication",
+    "Content-Type"
 ]
 
 ROOT_URLCONF = 'cosk.urls'
@@ -177,6 +189,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'users.User'
+
 
 
 # Internationalization

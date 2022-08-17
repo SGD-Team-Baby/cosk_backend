@@ -13,7 +13,7 @@ urlpatterns = [
     path('users/<pk>', UserInfoView.as_view()),
 
     # URLs that require a user to be logged in with a valid session / token.
-    path('user/', UserDetailsView.as_view(), name='rest_user_details'),
+    path('user', UserDetailsView.as_view(), name='rest_user_details'),
     path('user/update', UserUpdateView.as_view()),
     path('password/change', PasswordChangeView.as_view(), name='rest_password_change'),
 

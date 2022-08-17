@@ -19,12 +19,9 @@ from django.urls import path, include, re_path
 
 from rest_framework import serializers, viewsets, routers
 
-from users.views import UserDetailsView
-
 
 # Routers provide a way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -33,5 +30,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path("account/", include("users.urls")),
+    path("post/", include("posts.urls")),
+    path("image/", include("images.urls")),
 
 ]
