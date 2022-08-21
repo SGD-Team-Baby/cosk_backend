@@ -14,6 +14,7 @@ class Post(models.Model):
 
 	title = models.CharField(max_length=150)
 	favorite = models.IntegerField(default=0)
+	visit = models.IntegerField(default=0)
 	time = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
@@ -25,6 +26,18 @@ class Content(models.Model):
 	type = models.CharField(max_length=10, validators=[validateContentType])
 	options = models.CharField(max_length=150, blank=True)
 	text = models.TextField()
+	subtitle = models.TextField(blank=True)
+
+	def __str__(self):
+		return self.type
+
+class Comment(models.Model):
+	id = models.AutoField(primary_key=True)
+	post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+	text = models.TextField()
+	time = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return self.type
@@ -37,3 +50,10 @@ class PostTag(models.Model):
 	def __str__(self):
 		return self.tag_id
 
+class FavoriteLog(models.Model):
+	id = models.AutoField(primary_key=True)
+	post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.tag_id

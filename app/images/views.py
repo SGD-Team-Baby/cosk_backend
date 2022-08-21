@@ -30,11 +30,6 @@ class ImageUploadView(GenericAPIView):
 
 	def post(self, request, *args, **kwargs):
 		user = self.request.user
-		postId = self.request.data["post"]
-
-		post = get_object_or_404(Post, id=postId)
-		if post.user_id != user.id:
-			return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 		if len(self.request.FILES) == 0 or len(self.request.FILES) > FILE_COUNT_LIMIT:
 			return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -51,28 +46,41 @@ class ImageUploadView(GenericAPIView):
 			return Response(status=status.HTTP_400_BAD_REQUEST)
 
 		newName = str(uuid.uuid4())
-
-		path = "/upload/" + str(post.id) + "/"
-		os.makedirs(path, exist_ok=True)
 		filename = newName + file_ext
 
+		if "post" in self.request.data:
+			postId = self.request.data["post"]
+			postObject = get_object_or_404(Post, id=postId)
+			if post.user_id != user.id:
+				return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+			path = "/upload/" + str(post.id) + "/"
+		else:
+			path = "/upload/tmp/"
+			postObject = None
+
+		os.makedirs(path, exist_ok=True)
 		destination = open(path + filename, "wb+")
 		for chunk in file.chunks():
 			destination.write(chunk)
 		destination.close()
 
-		Image.objects.create(post=post, path=filename)
+		url = self.request.build_absolute_uri('/') + "image/view/" + str(filename)
+		Image.objects.create(post=postObject, url=url, filename=filename)
 
-		url = self.request.build_absolute_uri('/') + "image/" + str(post.id) + "/" + str(filename)
+		
 		return Response(url, status=status.HTTP_201_CREATED)
 
 
 class ImageView(GenericAPIView):
 	permission_classes = (AllowAny, )
 
-	def get(self, request, post, filename, *args, **kwargs):
-		post = get_object_or_404(Post, id=post)
-		path = "/upload/" + str(post.id) + "/" + filename
+	def get(self, request, filename, *args, **kwargs):
+		image = get_object_or_404(Image, filename=filename)
+		if image.post != None:
+			path = "/upload/" + str(image.post_id) + "/" + filename
+		else:
+			path = "/upload/tmp/" + filename
 
 		filename, file_ext = os.path.splitext(filename)
 		if file_ext == ".png":

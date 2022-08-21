@@ -32,5 +32,6 @@ urlpatterns = [
     path("account/", include("users.urls")),
     path("post/", include("posts.urls")),
     path("image/", include("images.urls")),
+    path("tag/", include("tags.urls")),
 
 ]
