@@ -1,10 +1,39 @@
 version: '3'
 
 services:
-  web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    ports: 
-      - "80:8000"
+  django:
+    container_name: django
+    build: ./django
+    command: uwsgi --ini uwsgi/uwsgi.ini
+    ports:
+      - 8000:8000
     volumes:
-      - './app:/app'
+      - './django/app:/app'
+      - './log/uwsgi:/log'
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    restart: always
+    ports:
+        - 80:80
+        - 443:443
+    volumes:
+      - './nginx/conf.d:/etc/nginx/conf.d'
+      - './certbot/conf:/etc/letsencrypt'
+      - './certbot/www:/var/www/certbot'
+      - './django/app:/app'
+      - './log/nginx:/log'
+    depends_on : 
+      - django
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:arm64v8-latest
+    restart: always
+    volumes:
+      - './certbot/conf:/etc/letsencrypt'
+      - './certbot/www:/var/www/certbot'
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
