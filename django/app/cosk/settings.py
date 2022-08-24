@@ -82,7 +82,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
-
+CORS_ORIGIN_WHITELIST = ['https://cosk.kr']
 CORS_ALLOW_HEADERS = [
     "Authorization",
     "Content-Type"
@@ -93,7 +93,7 @@ ROOT_URLCONF = 'cosk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

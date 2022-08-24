@@ -1,0 +1,32 @@
+{% load i18n %}
+{% load account %}
+
+{% block content %}
+<h1>{% trans "Confirm E-mail Address" %}</h1>
+
+{% if confirmation %}
+
+{% user_display confirmation.email_address.user as user_display %}
+
+<p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+
+<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+{% csrf_token %}
+    <button type="submit">{% trans 'Confirm' %}</button>
+</form>
+
+{% else %}
+
+
+
+<p>{% blocktrans %}이 이메일 주소는 만료되었거나, 이미 인증이 완료되었습니다. 다시 이메일을 보내시려면 아래를 활용해주세요.{% endblocktrans %}</p>
+<form method="post" action="{% url 'reset-email' %}">
+{% csrf_token %}
+    <input type="text" name="email" placeholder="example@gmail.com">
+    <button type="submit">{% trans 'Confirm' %}</button>
+</form>
+
+
+{% endif %}
+
+{% endblock %}
