@@ -18,7 +18,7 @@ from .models import Image
 # Create your views here.
 
 FILE_COUNT_LIMIT = 1
-FILE_SIZE_LIMIT = 5242880
+FILE_SIZE_LIMIT = 26214400 #25M
 WHITE_LIST_EXT = [
 	'.jpg',
 	'.jpeg',

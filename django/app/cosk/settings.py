@@ -81,7 +81,9 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
+X_FRAME_OPTIONS = 'DENY'
+
+CORS_ORIGIN_ALLOW_ALL = False # <- 모든 호스트 허용
 CORS_ORIGIN_WHITELIST = ['https://cosk.kr']
 CORS_ALLOW_HEADERS = [
     "Authorization",

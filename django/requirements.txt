@@ -3,6 +3,7 @@ djangorestframework
 dj-rest-auth
 django-allauth
 django-cors-headers
+django-csp
 djangorestframework-simplejwt
 gunicorn
 whitenoise

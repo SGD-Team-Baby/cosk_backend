@@ -34,3 +34,14 @@ class RegisterSerializer(RegisterSerializer):
     data["name"] = self.validated_data.get("name", "")
 
     return data
+
+  def validate(self, data):
+    data = super().validate(data)
+    if data["name"] == "":
+      raise serializers.ValidationError("이름을 입력해주세요")
+
+    try:
+      User.objects.get(name=data["name"])
+      raise serializers.ValidationError("이미 등록된 이름입니다.")
+    except User.DoesNotExist:
+      return data
